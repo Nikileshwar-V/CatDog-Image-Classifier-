@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat or Dog Classifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-attachment: fixed;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #image-container {
+            margin: 20px 0;
+        }
+
+        #image-container img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 0 10px;
+            transition: transform 0.3s ease;
+        }
+
+        #image-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            margin-top: 15px;
+        }
+
+        .btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        input[type="file"] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+
+        .prediction {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #0072ff;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+            transition: background-color 0.3s ease;
+        }
+
+        .prediction:hover {
+            background-color: #e0e0e0; /* Change background on hover */
+        }
+
+        #predicted-label {
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prediction.success {
+            color: green;
+        }
+
+        .prediction.error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Upload an Image to Classify</h2>
+
+        <!-- Image Display Section -->
+        <div id="image-container">
+            <img src="/static/images/cat.jpeg" alt="Cat">
+            <img src="/static/images/dog.jpeg" alt="Dog">
+        </div>
+
+        <!-- Form to Upload an Image -->
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <div class="upload-btn-wrapper">
+                <button class="btn">Choose File</button>
+                <input type="file" name="file" accept="image/*" required>
+            </div>
+            <br><br>
+            <button type="submit" class="btn">Upload and Predict</button>
+        </form>
+
+        <!-- Prediction Output -->
+        <div class="prediction" id="prediction-result">
+            {% if prediction %}
+                <p>Prediction: <span id="predicted-label">{{ prediction }}</span></p>
+            {% else %}
+                <p>Prediction: <span id="predicted-label">None</span></p>
+            {% endif %}
+        </div>
+    </div>
+
+</body>
+</html>
